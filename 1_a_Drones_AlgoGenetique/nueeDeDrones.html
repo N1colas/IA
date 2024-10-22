@@ -1,0 +1,344 @@
+<html lang="fr">
+<!--
+Cédric Vasseur
+www.beepmaster.com
+-->
+<head>
+<meta charset="utf-8">
+<style>
+
+canvas {
+  border: 1px solid black;
+}
+
+</style>
+
+
+</head>
+<body>
+
+<canvas width="640" height="480"></canvas>
+
+
+<script>
+
+//Hyperparametres
+nombre_de_drones=10;
+nombre_de_cibles=100;
+taille_adn=4;
+
+
+//Raccourcis
+let canvas = document.querySelector('canvas');
+let ctx = canvas.getContext('2d');
+
+var drones = [];
+var cibles =[];
+
+//Frame / sous Frames / Generation
+var generation=0;
+var frame=0;
+var subframe =0;
+
+
+//UneCible
+function UneCible()
+{
+	this.x=0;
+	this.y=0;
+
+	this.init=function()
+	{
+	this.x=parseInt(Math.random()*canvas.width-1);
+	this.y=parseInt(Math.random()*canvas.height-1);
+}
+
+	//
+	this.remove = function()
+	{
+	cibles[j].x=-100;
+	cibles[j].y=-100;
+	}
+
+	this.init();
+}//UneCible
+
+//UnDrone
+function UnDrone()
+{
+	this.x=0;
+	this.y=0;
+
+	this.init=function()
+	{
+	this.x=parseInt(Math.random()*canvas.width-1);
+	this.y=parseInt(Math.random()*canvas.height-1);
+	this.score = 0;
+	}
+	this.init();
+
+	this.setX=function(x){if(x>=0&&x<=canvas.width){this.x=x;}};
+	this.setY=function(y){if(y>=0&&y<=canvas.height){this.y=y;}};
+
+	this.gauche=function(){this.setX(this.x-1);}
+	this.droite=function(){this.setX(this.x+1);}
+	this.haut=function(){this.setY(this.y-1);}
+	this.bas=function(){this.setY(this.y+1);}
+
+	//Initialisation ADN
+	this.adn=[];
+
+	for(a=0;a!=taille_adn;a++)
+	{
+	this.adn.push(parseInt(Math.random()*4));
+	}//for
+
+	this.croisementEtMutation=function(adnA,adnB)
+	{
+	resultat=[];
+	for(i=0;i!=taille_adn;i++)
+	{
+
+	//Enjambement
+		if(Math.random()>0.5)
+			{resultat[i]=adnA[i];}
+		else
+			{resultat[i]=adnB[i];}
+
+	//Mutation
+		if(Math.random()>0.9)
+		{
+		resultat[i]=(parseInt(Math.random()*4));
+		}//if
+		
+	}//for
+
+		this.adn= resultat;
+
+	}//function
+
+
+	this.lireAllele=function(i)
+	{
+	lettre=this.adn[i];
+		switch(lettre)
+		{
+		case 0:
+		this.haut();
+		break;
+		case 1:
+		this.bas();
+		break;
+		case 2:
+		this.gauche();
+		break;
+		case 3:
+		this.droite();
+		break;
+		}//switch
+	}//function
+
+	this.score=0;
+}//UnDrone
+
+//Fonction de comparaison utilisée pour le tri entre deux scores
+function compareScore(a, b) {
+  return -1*(b.score - a.score);
+}
+
+
+for (var i=0;i!=nombre_de_drones;i++ )
+{
+	drones.push(new UnDrone());
+}
+
+for (var i=0;i!=nombre_de_cibles;i++ )
+{
+	cibles.push(new UneCible());
+}
+
+
+
+let imgDrone = new Image(); //nouvelle image
+imgDrone.src = 'drone.png'; //image vu du dessus de notre drone
+
+//chargement de la simulation quand l'image est chargée
+imgDrone.onload = function() {
+  init();
+};
+
+//fonction utilisée à chaque demande de rafraîchissement du canvas
+function run() {
+
+//Gestion du Temps
+frame++;
+if((frame%100)==0)
+subframe++;
+if(subframe>taille_adn-1)
+subframe=0;
+
+if(frame==1000)
+{
+frame=0;
+generation++;
+logbr("Generation "+generation);
+logbr("Tri par score");
+drones.sort(compareScore);
+var total = 0;
+drones.forEach(function(element) {
+  total += element.score;
+});
+
+
+logbr("Meilleur score : "+drones[0].score +" avec "+ drones[0].adn);
+logbr("Plus bas score : "+drones[drones.length-1].score+" avec "+ drones[drones.length-1].adn);
+logbr("Score cumulé : "+total);
+
+logbr("Sauvegarde du pool génétique d'origine...");
+
+//sauvegarde du pool generique d'origine
+pool=[];
+for(var i=0;i!=(drones.length);i++)
+pool[i]=drones[i].adn.slice();
+
+logbr("Selection par roulette...");
+//tirage au sort (type roulette pondérée en fonction du score)
+selection=[];
+log("Tirage : ");
+for(var i=0;i!=(drones.length*2);i++)
+{
+selection[i]=roulette();
+log("" +selection[i]+ ' ');
+}
+logbr("");
+
+logbr("Croisement et mutation...");
+for(var i=0;i!=(drones.length);i++)
+{
+	drones[i].croisementEtMutation(pool[selection[(i*2)]],pool[selection[(i*2)+1]]);
+}
+
+logbr("Remise à 0 de la simulation");
+//drones
+drones.forEach(function(element) {
+  element.init();
+});
+//cibles
+cibles.forEach(function(element) {
+  element.init();
+});
+
+
+}//if 
+
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+ctx.fillStyle ="#0000AA";
+ctx.font = '12px serif';
+ctx.fillText('DRONE VIRTUEL AUTONOME F=' + frame + " SF="+subframe + "GEN = "+generation, 0, canvas.height-12);
+
+//on dessine les drones
+for(var i=0;i!=drones.length;i++)
+{
+	ctx.drawImage(imgDrone, 0, 0, 64, 64, drones[i].x-16, drones[i].y-16, 32, 32)
+}//for
+
+for(var i=0;i!=cibles.length;i++)
+{
+	//on dessine les cibles
+		ctx.fillStyle = "#FF0000";
+		ctx.beginPath();
+		ctx.arc(cibles[i].x, cibles[i].y, 8, 0, 2 * Math.PI);
+		ctx.fill();
+	}//
+
+	//on joue la séquence (on se déplace)
+	jouerSequence();
+
+	//
+	testerCollision();
+
+	window.requestAnimationFrame(run);
+}
+
+//selectionne au hasard avec ponderation des scores un item
+function roulette()
+{
+	var total=0;
+	for(var i=0;i!=drones.length;i++)
+	total+=(drones[i].score+1);//ajout de 1 à tous les scores pour donner leur chance à ceux qui ont 0
+	var tirage = parseInt(Math.random() * total);// -1tirage entre 1 et total inclus
+	var soustotal = 0.0;
+	for (i=0;i!=drones.length;i++)
+	{
+	soustotal  += (drones[i].score+1); //attention au +1 pour donner une chance aux scores ) 0
+
+	if (soustotal>=tirage)
+	{
+	return i;//retourne
+	}
+	}
+
+	return drones.length-1;//dernier
+}//function
+
+function testerCollision()
+{
+	for(i=0;i!=drones.length;i++)
+		{
+			for(j=0;j!=cibles.length;j++)
+			{
+			
+			//calcule de la distance
+
+			distance = Math.sqrt(Math.pow(drones[i].x-cibles[j].x,2)+Math.pow(drones[i].y-cibles[j].y,2))
+			
+			if(distance<24)
+			{
+			//cibles[j].init();
+			cibles[j].remove();
+			
+			
+			drones[i].score++;
+			}
+			}//for j
+		}//for i
+}//function
+
+//Fonction qui calcule les nouvelles coordonnées de notre drone
+
+function jouerSequence()
+{
+	for(i=0;i!=drones.length;i++)
+		{
+			drones[i].lireAllele(subframe);		
+		}
+}
+
+//initialisation du script
+function init() {
+  window.requestAnimationFrame(run);
+}
+
+//journal
+function log(text)
+{
+	var div = document.getElementById('log');
+	div.innerHTML += text;
+}
+
+//journal + retour à la ligne
+function logbr(text)
+{
+	var div = document.getElementById('log');
+	div.innerHTML += text + "<br/>";
+}
+
+</script>
+
+<div id="log">
+
+</div>
+</body>
+
+</html>

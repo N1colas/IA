@@ -1,0 +1,116 @@
+<html lang="fr">
+<!--
+Cédric Vasseur
+www.beepmaster.com
+-->
+<head>
+<meta charset="utf-8">
+<style>
+
+canvas {
+  border: 1px solid black;
+}
+
+</style>
+
+
+</head>
+<body>
+
+<canvas width="640" height="480"></canvas>
+
+
+<script>
+
+//raccourcis
+let canvas = document.querySelector('canvas');
+let ctx = canvas.getContext('2d');
+
+//position du drone en x et y
+var droneX=16;
+var droneY=16;
+
+//position de la cible X et Y
+var cibleX=canvas.width/2;
+var cibleY=canvas.height/2;
+
+
+let imgDrone = new Image(); //nouvelle image
+imgDrone.src = 'drone.png'; //image vu du dessus de notre drone
+
+//chargement de la simulation quand l'image est chargée
+imgDrone.onload = function() {
+  init();
+};
+
+//fonction utilisée à chaque demande de rafraîchissement du canvas
+function run() {
+
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+ctx.fillStyle ="#0000AA";
+ctx.font = '12px serif';
+ctx.fillText(' MON PREMIER DRONE VIRTUEL AUTONOME', 0, canvas.height-12);
+
+//on dessine le drone
+  ctx.drawImage(imgDrone, 0, 0, 64, 64, droneX-16, droneY-16, 32, 32)
+
+//on dessine la cible
+ ctx.fillStyle = "#FF0000";
+ ctx.beginPath();
+ ctx.arc(cibleX, cibleY, 8, 0, 2 * Math.PI);
+ ctx.fill();
+
+
+
+//on appelle la fonction deplacer()
+deplacer();
+
+//
+testerCible();
+
+  window.requestAnimationFrame(run);
+}
+
+function testerCible()
+{
+if(droneX==cibleX)
+	if(droneY==cibleY)
+	{
+	cibleX=parseInt(Math.random()*canvas.width);
+	cibleY=parseInt(Math.random()*canvas.height);
+	
+	}
+}
+
+//Fonction qui calcule les nouvelles coordonnées de notre drone
+
+function deplacer() {
+    // Déplacement horizontal
+    if(droneX < cibleX) {
+        droneX = droneX + 1;  // Va à droite
+    }
+    else if(droneX > cibleX) {
+        droneX = droneX - 1;  // Va à gauche
+    }
+    
+    // Déplacement vertical
+    if(droneY < cibleY) {
+        droneY = droneY + 1;  // Va en bas
+    }
+    else if(droneY > cibleY) {
+        droneY = droneY - 1;  // Va en haut
+    }
+}
+
+//initialisation
+function init() {
+  window.requestAnimationFrame(run);
+}
+
+
+</script>
+</body>
+
+</html>

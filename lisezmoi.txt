@@ -1,0 +1,11 @@
+Chaque répertoire commence par le n° de son chapitre
+
+exemple :
+0_nom_de_l_exercice
+
+Attendre votre formateur avant d'installer ou d'accéder à un répertoire SVP
+
+Le répertoire 99_BONUS contient un jeu,
+une énigme à résoudre en fonction des points étudiés ensemble
+vous pouvez travailler sur ce répertoire à tout moment,
+pendant (si vous êtes en avance) et/ou après la formation.

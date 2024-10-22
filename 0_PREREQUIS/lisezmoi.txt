@@ -1,0 +1,20 @@
+25/05/2022
+
+L'ensemble des principales sources ont été testées et modifiées pour 
+être compatible avec la dernière version de Python en date
+
+Version de Python :
+Python 3.10.4 64 bits - 25/05/2022
+
+Certains exemples peuvent demander les versions 
+- Python 3.8.6.rc1 64 bits 
+- Python 3.8.4.rc1 32 bits 
+
+OpenCV :
+Pour l'exercice de suivi de flux de mouvement en vidéo :
+Installer OpenCV 3.4.7
+
+OpticalFlow : 
+Si erreur "clock" commenter la ligne #from time import clock dans video.py
+
+Vous devrez disposer d'un compte google pour certains exercices.
