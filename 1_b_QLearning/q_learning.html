@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+    </head>
+
+    <style media="screen">
+        body{
+            background: #efefef;
+        }
+
+        section{
+            position: relative;
+        }
+
+        .grid{
+            width: 456px;
+            height: 456px;
+            background: white;
+            margin: auto;
+            margin-top: 20px;
+        }
+
+        .state {
+            width: 150px;
+            height: 150px;
+            border: 1px solid blue;
+            float: left;
+            position: relative;
+        }
+
+        .state h1{
+            position: absolute;
+            top: 120px;
+            margin: 0px;
+            font-size: 25px;
+            color: orange;
+            left: 119px;
+        }
+
+        .left, .right, .up, .down {
+            position: absolute;
+            color:  grey;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .left {
+            top: 75px;
+            left: 10px;
+        }
+
+        .right {
+            top: 75px;
+            right: 10px;
+        }
+
+        .up {
+            top: 10px;
+            right: 75px;
+        }
+
+        .down {
+            bottom: 10px;
+            right: 75px;
+        }
+
+        #five {
+            background: #f88;
+        }
+
+        #three {
+            background: #8f8;
+        }
+
+        .agent {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: orange;
+			border: 1px solid red;
+            z-index: 80;
+        }
+
+        #etape, #accelerer{
+            background: #4e4e4e;
+            border: none;
+            width: 100px;
+            height: 50px;
+            color: white;
+            font-weight: bold;
+            display: inline;
+            margin: auto;
+            cursor: pointer;
+        }
+
+    </style>
+    <body>
+
+
+        <section class="grid">
+
+            <div class="agent" id="agent">
+            </div>
+
+            <div class="state" id="one">
+                <h1>1</h1>
+                <span class="left">
+                    <span id="1_0">0</span>
+                    <br>
+                    &#8592;
+                </span>
+
+                <span class="right">
+                    <span id="1_1">0</span>
+                    <br>
+                    &#8594;
+                </span>
+
+                <span class="up">
+                    <span id="1_2">0</span>
+                    <br>
+                    &#8593;
+                </span>
+
+                <span class="down">
+                    <span id="1_3">0</span>
+                    <br>
+                    &#8595;
+                </span>
+            </div>
+
+            <div class="state" id="2">
+                <h1>2</h1>
+                <span class="left">
+                    <span id="2_0">0</span>
+                    <br>
+                    &#8592;
+                </span>
+
+                <span class="right">
+                    <span id="2_1">0</span>
+                    <br>
+                    &#8594;
+                </span>
+
+                <span class="up">
+                    <span id="2_2">0</span>
+                    <br>
+                    &#8593;
+                </span>
+
+                <span class="down">
+                    <span id="2_3">0</span>
+                    <br>
+                    &#8595;
+                </span>
+            </div>
+            <div class="state" id="three">
+                <h1>3</h1>
+                <span class="left">
+                    <span id="3_0">0</span>
+                    <br>
+                    &#8592;
+                </span>
+
+                <span class="right">
+                    <span id="3_1">0</span>
+                    <br>
+                    &#8594;
+                </span>
+
+                <span class="up">
+                    <span id="3_2">0</span>
+                    <br>
+                    &#8593;
+                </span>
+
+                <span class="down">
+                    <span id="3_3">0</span>
+                    <br>
+                    &#8595;
+                </span>
+            </div>
+            <div class="state" id="four">
+                <h1>4</h1>
+                <span class="left">
+                    <span id="4_0">0</span>
+                    <br>
+                    &#8592;
+                </span>
+
+                <span class="right">
+                    <span id="4_1">0</span>
+                    <br>
+                    &#8594;
+                </span>
+
+                <span class="up">
+                    <span id="4_2">0</span>
+                    <br>
+                    &#8593;
+                </span>
+
+                <span class="down">
+                    <span id="4_3">0</span>
+                    <br>
+                    &#8595;
+                </span>
+            </div>
+            <div class="state" id="five">
+                <h1>5</h1>
+                <span class="left">
+                    <span id="5_0">0</span>
+                    <br>
+                    &#8592;
+                </span>
+
+                <span class="right">
+                    <span id="5_1">0</span>
+                    <br>
+                    &#8594;
+                </span>
+
+                <span class="up">
+                    <span id="5_2">0</span>
+                    <br>
+                    &#8593;
+                </span>
+
+                <span class="down">
+                    <span id="5_3">0</span>
+                    <br>
+                    &#8595;
+                </span>
+            </div>
+            <div class="state" id="six">
+                <h1>6</h1>
+                <span class="left">
+                    <span id="6_0">0</span>
+                    <br>
+                    &#8592;
+                </span>
+
+                <span class="right">
+                    <span id="6_1">0</span>
+                    <br>
+                    &#8594;
+                </span>
+
+                <span class="up">
+                    <span id="6_2">0</span>
+                    <br>
+                    &#8593;
+                </span>
+
+                <span class="down">
+                    <span id="6_3">0</span>
+                    <br>
+                    &#8595;
+                </span>
+            </div>
+            <div class="state" id="seven">
+                <h1>7</h1>
+                <span class="left">
+                    <span id="7_0">0</span>
+                    <br>
+                    &#8592;
+                </span>
+
+                <span class="right">
+                    <span id="7_1">0</span>
+                    <br>
+                    &#8594;
+                </span>
+
+                <span class="up">
+                    <span id="7_2">0</span>
+                    <br>
+                    &#8593;
+                </span>
+
+                <span class="down">
+                    <span id="7_3">0</span>
+                    <br>
+                    &#8595;
+                </span>
+            </div>
+            <div class="state" id="height">
+                <h1>8</h1>
+                <span class="left">
+                    <span id="8_0">0</span>
+                    <br>
+                    &#8592;
+                </span>
+
+                <span class="right">
+                    <span id="8_1">0</span>
+                    <br>
+                    &#8594;
+                </span>
+
+                <span class="up">
+                    <span id="8_2">0</span>
+                    <br>
+                    &#8593;
+                </span>
+
+                <span class="down">
+                    <span id="8_3">0</span>
+                    <br>
+                    &#8595;
+                </span>
+            </div>
+            <div class="state" id="nine">
+                <h1>9</h1>
+                <span class="left">
+                    <span id="9_0">0</span>
+                    <br>
+                    &#8592;
+                </span>
+
+                <span class="right">
+                    <span id="9_1">0</span>
+                    <br>
+                    &#8594;
+                </span>
+
+                <span class="up">
+                    <span id="9_2">0</span>
+                    <br>
+                    &#8593;
+                </span>
+
+                <span class="down">
+                    <span id="9_3">0</span>
+                    <br>
+                    &#8595;
+                </span>
+            </div>
+        </section>
+<center>
+        <button id="etape" type="button">Etape</button>
+		<button id="accelerer" type="button">X 10000</button>
+</center>
+		<div id="qtable"></div>
+
+        <script type="application/javascript">
+
+        var agent = document.getElementById("agent");
+        var agent_pos = {y: 0, x: 0};
+        var grid = [
+                [0, 0, 1],
+                [0, -1, 0],
+                [0, 0, 0]
+        ];
+
+        agent.style.top = "52px";
+        agent.style.left = "52px";
+
+        var etape = document.getElementById("etape");
+        var accelerer = document.getElementById("accelerer");
+
+		var state = agent_pos.y*3+agent_pos.x+1;
+
+        var Q = [
+            ['Gauche', 'Droite', 'Haut', 'Bas'],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0]
+        ];
+
+        function step(action){
+            if (action == 0){ // gauche
+                agent_pos.x = Math.min(2, Math.max(0, agent_pos.x - 1));
+            }
+            else if (action == 1){ // droite
+                agent_pos.x = Math.min(2, Math.max(0, agent_pos.x + 1));
+            }
+            else if (action == 2){ //haut
+                agent_pos.y = Math.min(2, Math.max(0, agent_pos.y - 1));
+            }
+            else if (action == 3){ // bas
+                agent_pos.y = Math.min(2, Math.max(0, agent_pos.y + 1));
+            }
+
+            agent.style.top = (agent_pos.y*150)+50 + "px";
+            agent.style.left = (agent_pos.x*150)+50 + "px";
+
+            state = agent_pos.y*3+agent_pos.x+1;
+
+			document.getElementById("qtable").innerHTML= "<center>"+makeTableHTML(Q)+"</center>";
+
+
+            return {r: grid[agent_pos.y][agent_pos.x], stp1: state};
+        }
+
+        function getRandomInt(max) {
+          return Math.floor(Math.random() * Math.floor(max));
+        }
+
+        function argMax(array) {
+          return array.map((x, i) => [x, i]).reduce((r, a) => (a[0] > r[0] ? a : r))[1];
+        }
+
+        function take_action(st, eps){
+            if (Math.random() < eps){
+                action = getRandomInt(4);
+            }
+            else{
+                action = argMax(Q[st])
+            }
+            return action;
+        }
+
+        etape.addEventListener("click", () => {
+            var gamma = 0.9;
+            var lr = 0.1;
+            var st = state;
+            var at = take_action(st, 1.0);
+            var {r, stp1} = step(at);
+
+            var atp1 = take_action(stp1, 0.0);
+            Q[st][at] = Q[st][at] + lr*(r + gamma*Q[stp1][atp1] - Q[st][at])
+
+            document.getElementById(st+"_"+at).innerHTML = Math.round(Q[st][at] * 100) / 100;
+
+            if (Q[st][at] == 0){
+                document.getElementById(st+"_"+at).style.color = "#dcdcdc";
+            }
+            else if (Q[st][at] < 0){
+                document.getElementById(st+"_"+at).style.color = "#ff6060";
+            }
+            else {
+                document.getElementById(st+"_"+at).style.color = "#92b77c";
+            }
+
+        });
+
+
+//////////////////////
+			accelerer.addEventListener("click", () => {
+
+			for(var i=0;i!=1000;i++)
+			etape.click();
+
+
+			});
+///////////////
+
+		function makeTableHTML(myArray) {
+			var result = "<table width=100% border=1>";
+			for(var i=0; i<myArray.length; i++) {
+				result += "<tr>";
+				for(var j=0; j<myArray[i].length; j++){
+					result += "<td width=25%>"+myArray[i][j]+"</td>";
+				}
+				result += "</tr>";
+			}
+			result += "</table>";
+
+			return result;
+		}
+
+        </script>
+    </body>
+</html>

@@ -1,0 +1,16 @@
+Installer Python
+Python 3.8.6rc1 Version 64 Bits ! 
+
+Créer un environnement virtuel Python
+py -m venv env
+
+Exécuter l'environnement virtuel
+.\env\Scripts\activate
+
+Installer les packages requis pour ce projet
+pip install -r requirements.txt
+
+lancer le projet
+py approximate.py
+
+note : ce script fonctionne également avec la version de python 3.10.4
