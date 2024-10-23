@@ -21,19 +21,29 @@ import cv2 as cv
 import video
 
 sensibilite_mouvement = 2
-sensibilite_duree = 5;
-x_gauche=0;
-x_droite=0;
-x_neutre=0;
-x_text="";
-old_x_text="";
+sensibilite_duree = 5
 
-commandes=[]
+# Compteurs horizontaux
+x_gauche = 0
+x_droite = 0
+x_neutre = 0
+
+# Compteurs verticaux
+y_haut = 0
+y_bas = 0
+y_neutre = 0
+
+# Variables pour le texte
+direction_text = ""
+old_direction_text = ""
+
+commandes = []
 
 def draw_flow(img, flow, step=16):
-    global x_gauche,x_droite, x_neutre
-    global sensibilite_duree,sensibilite_mouvement
-    global x_text,old_x_text
+    global x_gauche, x_droite, x_neutre
+    global y_haut, y_bas, y_neutre
+    global sensibilite_duree, sensibilite_mouvement
+    global direction_text, old_direction_text
 
     h, w = img.shape[:2]
     y, x = np.mgrid[step/2:h:step, step/2:w:step].reshape(2,-1).astype(int)
@@ -48,7 +58,7 @@ def draw_flow(img, flow, step=16):
     x_avg = np.average(fx)
     y_avg = np.average(fy)
 
-
+    # Détection horizontale
     if(abs(x_avg)<sensibilite_mouvement):
        x_neutre+=1
     else:
@@ -57,32 +67,46 @@ def draw_flow(img, flow, step=16):
         else:
             x_droite+=1
 
-    if (x_gauche > sensibilite_duree):
-        x_gauche = 0
-        x_droite = 0
-        x_neutre = 0
-        x_text = "gauche";
+    # Détection verticale
+    if abs(y_avg) < sensibilite_mouvement:
+        y_neutre += 1
+    else:
+        if y_avg > sensibilite_mouvement:
+            y_haut += 1
+        else:
+            y_bas += 1
 
-    if (x_droite > sensibilite_duree):
-        x_gauche = 0
-        x_droite = 0
-        x_neutre = 0
-        x_text = "droite";
+    # Détermination de la direction dominante
+    def reset_counters():
+        global x_gauche, x_droite, x_neutre, y_haut, y_bas, y_neutre
+        x_gauche = x_droite = x_neutre = y_haut = y_bas = y_neutre = 0
 
-    if (x_neutre > sensibilite_duree):
-        x_gauche = 0
-        x_droite = 0
-        x_neutre = 0
-        x_text = "neutre";
+    # Vérification des mouvements horizontaux
+    if x_gauche > sensibilite_duree:
+        reset_counters()
+        direction_text = "gauche"
+    elif x_droite > sensibilite_duree:
+        reset_counters()
+        direction_text = "droite"
+    # Vérification des mouvements verticaux
+    elif y_haut > sensibilite_duree:
+        reset_counters()
+        direction_text = "haut"
+    elif y_bas > sensibilite_duree:
+        reset_counters()
+        direction_text = "bas"
+    elif x_neutre > sensibilite_duree and y_neutre > sensibilite_duree:
+        reset_counters()
+        direction_text = "neutre"
 
-
-    cv.putText(vis, x_text, (10, 100), cv.FONT_HERSHEY_SIMPLEX, 4, (0, 255, 0), 2, cv.LINE_AA)
-
+    # Affichage du texte
+    cv.putText(vis, direction_text, (10, 100), cv.FONT_HERSHEY_SIMPLEX, 4, (0, 255, 0), 2, cv.LINE_AA)
     cv.putText(vis, ', '.join(commandes), (10, 200), cv.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 2, cv.LINE_AA)
 
-    if old_x_text!= x_text:
-        commandes.append(x_text);
-        old_x_text = x_text
+    # Mise à jour de l'historique des commandes
+    if old_direction_text != direction_text:
+        commandes.append(direction_text)
+        old_direction_text = direction_text
 
     return vis
 
@@ -128,6 +152,9 @@ if __name__ == '__main__':
 
     while True:
         ret, img = cam.read()
+        if not ret:
+            break
+            
         gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
         flow = cv.calcOpticalFlowFarneback(prevgray, gray, None, 0.5, 3, 15, 3, 5, 1.2, 0)
         prevgray = gray
