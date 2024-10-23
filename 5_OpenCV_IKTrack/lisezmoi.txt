@@ -1,0 +1,1 @@
+Vous devez installer et modifier le code de Ik_track directement dans le répertoire OpenCV des exemples Python  pour éviter des problèmes de dépendances.

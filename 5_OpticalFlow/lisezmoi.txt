@@ -1,0 +1,4 @@
+Si erreur "clock"
+commenter la ligne
+#from time import clock 
+dans video.py
