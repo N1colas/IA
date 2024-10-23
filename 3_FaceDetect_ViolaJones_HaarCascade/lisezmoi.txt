@@ -1,0 +1,8 @@
+Python 3.8.6rc1 (64bits) windows
+voir requirements.txt pour les packages complets
+
+Pour installer opencv
+pip install opencv2-python
+
+
+Note : fonctionne également avec la version de python 3.10.4

@@ -1,0 +1,9 @@
+installer dans l'ordre si problème à installer scikit-image
+
+numpy
+matplotlib
+scipy
+scikit-image
+seaborn
+
+testé avec la version python 3.10.8

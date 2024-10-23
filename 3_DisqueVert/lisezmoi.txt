@@ -1,0 +1,14 @@
+Créer un environnement virtuel Python
+py -m venv env
+
+Exécuter l'environnement virtuel
+.\env\Scripts\activate
+
+Installer les packages requis pour ce projet
+pip install -r requirements.txt
+
+lancer le projet
+py approximate.py
+
+Note : fonctionne également avec la version de python 3.10.4
+

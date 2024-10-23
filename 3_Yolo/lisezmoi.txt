@@ -1,0 +1,5 @@
+En fonction de votre version de Python / opencv2 / cuda
+opencv retourne un tableau à 1 ou 2 dimension
+les lignes concernées sont notées dans les sources avec un commentaire
+
+https://stackoverflow.com/questions/69834335/loading-yolo-invalid-index-to-scalar-variable

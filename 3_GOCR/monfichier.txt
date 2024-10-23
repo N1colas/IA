@@ -1,0 +1,2 @@
+<barcode type="39" chars="8" code="*WIKI39*" crc="3" error="0.086" /><barcode type="39" chars="8" code="*WIKI39*" crc="3" error="0.086" />
+
