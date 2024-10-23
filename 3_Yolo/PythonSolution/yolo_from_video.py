@@ -9,7 +9,7 @@ import numpy as np
 # 2- YOLO
 
 # Chargement de YOLO
-net = cv2.dnn.readNet("yolov3-tiny.weights", "yolov3-tiny.cfg")
+net = cv2.dnn.readNet("yolov3.weights", "yolov3.cfg")
 
 # Chargement des noms des classes depuis le fichier coco
 classes = []
@@ -18,8 +18,8 @@ with open("coco.names", "r") as f:
 layer_names = net.getLayerNames()
 
 # On récupère la couche de sortie
-output_layers = [layer_names[i - 1] for i in net.getUnconnectedOutLayers()]
-#output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
+#output_layers = [layer_names[i - 1] for i in net.getUnconnectedOutLayers()]
+output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 # On affecte une couleur aléatoire
 colors = np.random.uniform(0, 255, size=(len(classes), 3))
 
