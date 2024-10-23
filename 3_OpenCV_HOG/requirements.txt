@@ -28,5 +28,4 @@ six==1.15.0
 sklearn==0.0
 threadpoolctl==2.1.0
 tifffile==2020.9.3
-video==0.0.1
 virtualenv==20.0.31

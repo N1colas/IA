@@ -58,6 +58,13 @@ while True:
                 boxes.append([x, y, w, h])
                 confidences.append(float(confidence))
                 class_ids.append(class_id)
+                
+                # Vérification de la position à droite
+                if center_x > width // 2:
+                    print("Alerte : Chien détecté à droite")
+
+                # Message dans la console si un chien est détecté
+                print("Chien en vu")
 
     # Dessin des rectangles autour des chiens détectés
     indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
